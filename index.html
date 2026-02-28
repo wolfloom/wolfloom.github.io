@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Installation Guide</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="./wolfloom.png">
+</head>
+<body>
+<div class="mouse-glow"></div>
+    <header>
+	  <button class="brand-button" onclick="window.location.href='https://github.com/wolfloom/wolfloom.github.io'">
+		<img src="largewolfloom.png" alt="WolfLoom Logo" class="logo">
+		<span class="site-name">WolfLoom</span>
+	  </button>
+        <h1>Installation Guide</h1>
+        <p>How to set up WolfLoom on different operating systems</p>
+		<a href="server.zip" class="download-btn" download>
+			<div class="icon-wrapper">
+				<img src="images/download.png" alt="Download icon" class="download-icon">
+			</div>
+			<span class="download-text">Download ZIP</span>
+		</a>
+    </header>
+
+    <nav class="tabs">
+        <div class="underline"></div>
+        <button class="tab-btn active" data-tab="windows">
+            <img src="images/windows.png" alt="Windows Logo" class="tab-logo"> Windows
+        </button>
+        <button class="tab-btn" data-tab="linux">
+            <img src="images/linux.png" alt="Linux Logo" class="tab-logo"> Linux
+        </button>
+        <button class="tab-btn" data-tab="android">
+            <img src="images/android.png" alt="Android Logo" class="tab-logo"> Android
+        </button>
+    </nav>
+
+    <main>
+        <section class="tab-content" id="windows">
+            <h2>Windows Installation</h2>
+            <ol>
+                <li>Install <strong>Python 3.11+</strong> from <a href="https://www.python.org/downloads/">python.org</a>.</li>
+                <li>Open Command Prompt and navigate to your project folder.</li>
+                <li>Install Flask:
+                    <pre>pip install flask psutil</pre>
+                </li>
+                <li>Run the server:
+                    <pre>python host.py</pre>
+                </li>
+                <li>Access it in your browser at <code>http://0.0.0.0:80/</code></li>
+            </ol>
+        </section>
+
+        <section class="tab-content" id="linux">
+            <h2>Linux Installation</h2>
+            <ol>
+                <li>Install Python 3 and pip (Debian/Ubuntu):
+                    <pre>sudo apt update
+sudo apt install python3 python3-pip</pre>
+                </li>
+                <li>Navigate to your project folder:
+                    <pre>cd /path/to/your/project</pre>
+                </li>
+                <li>Install dependencies:
+                    <pre>pip3 install flask psutil</pre>
+                </li>
+                <li>Run the server (might require sudo for port 80):
+                    <pre>sudo python3 host.py</pre>
+                </li>
+                <li>Open <code>http://0.0.0.0:80/</code> in a browser.</li>
+            </ol>
+        </section>
+
+        <section class="tab-content" id="android">
+            <h2>Android Installation</h2>
+            <ol>
+                <li>Install <strong>Termux</strong> from <a href="https://play.google.com/store/apps/details?id=com.termux">Google Play</a>.</li>
+                <li>Update packages and install Python:
+                    <pre>pkg update
+pkg install python</pre>
+                </li>
+                <li>Navigate to your project folder in Termux.</li>
+                <li>Install dependencies:
+                    <pre>pip install flask psutil</pre>
+                </li>
+                <li>Run the server:
+                    <pre>python host.py</pre>
+                </li>
+                <li>Open your Android browser and go to <code>http://0.0.0.0:80/</code></li>
+            </ol>
+        </section>
+    </main>
+
+    <footer></footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
