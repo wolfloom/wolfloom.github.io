@@ -1,0 +1,71 @@
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+        }
+
+        header {
+            padding: 40px 20px 20px 20px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: #aaa;
+            font-size: 1rem;
+        }
+
+        .partners-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding: 40px 20px 60px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .partner-card {
+            background: #111;
+            border-radius: 16px;
+            width: 220px;
+            padding: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+            color: white;
+        }
+
+        .partner-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .partner-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        .partner-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+        }
+
+        .partner-description {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        footer {
+            padding: 30px;
+            font-size: 0.8rem;
+            color: #666;
+        }
