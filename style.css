@@ -291,8 +291,24 @@ pre {
 
 /* Footer */
 footer {
-    height: 60px;
+    padding: 1rem 2rem;     /* gives it proper breathing room */
     background: transparent;
+    text-align: right;      /* pushes content to the right */
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid transparent;  /* invisible border initially */
+    border-radius: 6px;
+    transition: border 0.2s ease, background 0.2s ease;
+}
+
+footer a:hover {
+    border: 1px solid #4fc3f7;   /* nice Wolf blue */
+    background: rgba(79,195,247,0.1);
 }
 
 /* Responsive tweaks */
