@@ -2,34 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Partners | Wolf</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+	<meta name="robots" content="index, follow">
+    <title>WolfLoom - Partners</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../wolfloom.png">
+</head>
 <body>
+<div class="mouse-glow"></div>
+    <header>
+	  <button class="brand-button" onclick="window.location.href='https://github.com/wolfloom/wolfloom.github.io'">
+		<img src="largewolfloom.png" alt="WolfLoom Logo" class="logo">
+		<span class="site-name">WolfLoom</span>
+	  </button>
+        <h1>Partners</h1>
+        <p>Here are creators, developers and supporters who havecontributed to WolfLoom</p>
+    </header>
 
-<header>
-    <h1>Partners</h1>
-    <p class="subtitle">Creators, developers and supporters who support the Wolf project</p>
-</header>
+    <nav class="tabs">
+        <div class="underline"></div>
+        <button class="tab-btn active" data-tab="Creators">
+            <img src="images/creators.png" alt="Creator Icon" class="tab-logo"> Creators
+        </button>
+        <button class="tab-btn" data-tab="developers">
+            <img src="images/developers.png" alt="Developer Icon" class="tab-logo"> Developers
+        </button>
+        <button class="tab-btn" data-tab="supporters">
+            <img src="images/supporters.png" alt="Supporter Icon" class="tab-logo"> Supporters
+        </button>
+    </nav>
 
-<section class="partners-container">
+    <main>
+        <section class="tab-content" id="creators">
+            <h2>Creators who have helped the WolfLoom project</h2>
+            <ol>
+                <li>Nobody yet. :(</li>
+            </ol>
+        </section>
 
-    <!-- Example Partner Card -->
-    <a href="https://youtube.com/" target="_blank" class="partner-card">
-        <img src="avatar.jpg" alt="Partner Avatar" class="partner-avatar">
-        <div class="partner-name">Channel Name</div>
-        <div class="partner-description">
-            Builds open-source tools & server projects.
-        </div>
-    </a>
+        <section class="tab-content" id="developers">
+            <h2>Developers who have helped the WolfLoom project</h2>
+            <ol>
+                <li>Nobody yet :(</li>
+            </ol>
+        </section>
 
-    <!-- Duplicate the block above for more partners -->
+        <section class="tab-content" id="supporters">
+            <h2>Supporters who have helped the WolfLoom project</h2>
+            <ol>
+                <li>Nobody yet. :(</li>
+            </ol>
+        </section>
+    </main>
 
-</section>
+    <footer></footer>
 
-<footer>
-    © 2026 Wolf Project
-</footer>
-
+    <script src="script.js"></script>
 </body>
 </html>
