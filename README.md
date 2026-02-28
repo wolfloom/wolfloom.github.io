@@ -27,5 +27,5 @@ WolfLoom is hosted at [wolfloom.github.io](https://wolfloom.github.io) and serve
 Clone or fork this repo to run a local version:
 
 ```bash
-git clone https://github.com/yourusername/wolfloom.github.io.git
+git clone https://github.com/wolfloom/wolfloom.github.io.git
 cd wolfloom.github.io
