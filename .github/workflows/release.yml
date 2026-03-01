@@ -1,49 +1,66 @@
-name: Build and Release Linux App
+name: WolfLoom Build & Release
 
+# Trigger on pushes to /server or manual trigger
 on:
-  release:
-    types: [published]
+  push:
+    paths:
+      - 'server/**'
+  workflow_dispatch:  # allows manual trigger
 
 jobs:
-  build-linux:
+  build-and-release:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: [3.13]
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.13
+          python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install pyinstaller PyQt6 flask psutil
+          python -m pip install --upgrade pip
+          pip install pyinstaller flask psutil
 
-      - name: Build Linux binary
+      - name: Build WolfLoom
+        working-directory: ./server
         run: |
-          source venv/bin/activate
+          mkdir -p dist
           pyinstaller --onefile --windowed control.py
 
-      - name: Prepare release assets
+      - name: Zip build
+        working-directory: ./server
         run: |
-          mkdir -p release/WolfLoom-Linux-x64
-          cp dist/control release/WolfLoom-Linux-x64/
-          cp config.json release/WolfLoom-Linux-x64/
-          cp -r static release/WolfLoom-Linux-x64/
-          cp -r templates release/WolfLoom-Linux-x64/
-          mkdir -p release/WolfLoom-Linux-x64/Files/Data
-          cd release
-          zip -r WolfLoom-Linux-x64.zip WolfLoom-Linux-x64
-          cd ..
+          BUILD_OS="${{ matrix.os }}"
+          ZIP_NAME="WolfLoom-${BUILD_OS}.zip"
+          mkdir -p release
+          if [[ "$BUILD_OS" == "windows-latest" ]]; then
+              7z a release/$ZIP_NAME dist/control.exe
+          else
+              zip -j release/$ZIP_NAME dist/control
+          fi
 
-      - name: Upload Release Assets
+      - name: Create GitHub Release
+        id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          files: release/WolfLoom-Linux-x64.zip
+          tag_name: v${{ github.run_number }}
+          name: WolfLoom v${{ github.run_number }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload build to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./server/release/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
