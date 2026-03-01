@@ -1,0 +1,45 @@
+name: Build and Release Linux App
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.13
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install pyinstaller PyQt6 flask psutil
+
+      - name: Build Linux binary
+        run: |
+          source venv/bin/activate
+          pyinstaller --onefile --windowed control.py
+
+      - name: Prepare release assets
+        run: |
+          mkdir release
+          cp dist/control release/WolfLoom-Linux-x64
+          cd release
+          zip -r WolfLoom-Linux-x64.zip WolfLoom-Linux-x64
+          cd ..
+
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release/WolfLoom-Linux-x64.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
