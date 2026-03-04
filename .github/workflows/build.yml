@@ -1,7 +1,9 @@
-name: Build Apps
+name: Build WolfLoom Binaries
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # optional manual trigger
 
 jobs:
   build-linux:
@@ -19,15 +21,14 @@ jobs:
           pip install -r server/requirements.txt
           pip install pyinstaller
 
-      - name: Build Linux executable
+      - name: Build Linux binary
         run: |
           pyinstaller --onefile server/host.py --name wolfloom-server-linux
-        working-directory: .
 
-      - name: Upload Linux build
+      - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
         with:
-          name: linux-build
+          name: wolfloom-server-linux
           path: dist/wolfloom-server-linux
 
   build-windows:
@@ -45,14 +46,44 @@ jobs:
           pip install -r server\requirements.txt
           pip install pyinstaller
 
-      - name: Build Windows executable
+      - name: Build Windows binary
         run: |
           pyinstaller --onefile server\host.py --name wolfloom-server.exe
         shell: powershell
-        working-directory: .
 
-      - name: Upload Windows build
+      - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
-          name: windows-build
+          name: wolfloom-server.exe
           path: dist\wolfloom-server.exe
+
+  release:
+    needs: [build-linux, build-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: wolfloom-server-linux
+          path: ./dist
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: wolfloom-server.exe
+          path: ./dist
+
+      - name: Create or update release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload binaries to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
