@@ -385,3 +385,32 @@ footer a:hover {
     transform: translateX(0);
     opacity: 1;
 }
+
+.coming-soon {
+  position: relative;
+  cursor: not-allowed; /* optional: shows it’s inactive */
+}
+
+/* Tooltip */
+.coming-soon::after {
+  content: "Coming soon!";
+  position: absolute;
+  bottom: 120%;  /* above the button */
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+/* Show tooltip on hover */
+.coming-soon:hover::after {
+  opacity: 1;
+}
