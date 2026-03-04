@@ -1,11 +1,17 @@
 name: Build WolfLoom Binaries
 
+# Trigger automatically on push to main + optional manual trigger
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:  # optional manual trigger
+  workflow_dispatch:
+
+# Needed so the release step can create/update releases
+permissions:
+  contents: write
 
 jobs:
+  # ---------------- Linux Build ----------------
   build-linux:
     runs-on: ubuntu-latest
     steps:
@@ -31,6 +37,7 @@ jobs:
           name: wolfloom-server-linux
           path: dist/wolfloom-server-linux
 
+  # ---------------- Windows Build ----------------
   build-windows:
     runs-on: windows-latest
     steps:
@@ -55,29 +62,33 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: wolfloom-server.exe
-          path: dist\wolfloom-server.exe
+          path: dist/wolfloom-server.exe
 
+  # ---------------- Create/Update Release ----------------
   release:
     needs: [build-linux, build-windows]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download artifacts
+      - name: Download Linux artifact
         uses: actions/download-artifact@v4
         with:
           name: wolfloom-server-linux
           path: ./dist
 
-      - uses: actions/download-artifact@v4
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
         with:
           name: wolfloom-server.exe
           path: ./dist
 
-      - name: Create or update release
+      - name: Create release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: latest
+          tag_name: v${{ github.run_number }}     # unique per run
+          name: WolfLoom v${{ github.run_number }}
+          body: "Automatic build from commit ${{ github.sha }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
