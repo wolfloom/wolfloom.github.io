@@ -387,7 +387,6 @@ footer a:hover {
 }
 
 .coming-soon {
-  position: relative;
   cursor: not-allowed; /* optional: shows it’s inactive */
 }
 
