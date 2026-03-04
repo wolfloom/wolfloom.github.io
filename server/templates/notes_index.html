@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Notes{% endblock %}
+
+{% set csspage = "notes" %}
+
+{% block body_class %}notes-page{% endblock %}
+
+{% block content %}
+<h2>Quick Notes</h2>
+
+<div style="width:90%; height:90%; position: relative;">
+  <textarea id="notes" 
+    style="width:100%; height:100%; font-size:16px; padding:10px 35px 10px 10px; 
+           background:var(--panel-color); color:var(--text-color); box-sizing:border-box;">
+  </textarea>
+  <span id="sync-icon" 
+        style="position:absolute; top:5px; right:5px; cursor:pointer;">🔄</span>
+</div>
+
+<script>
+
+let lastServerVersion = 0;
+const textarea = document.getElementById('notes');
+const icon = document.getElementById('sync-icon');
+
+lucide.createIcons(); // initialise all <i data-lucide="...">
+
+let timeout;
+let saving = false;
+
+function setIconSynced() {
+  const container = document.getElementById('sync-icon');
+  container.innerHTML = '<i data-lucide="cloud-check"></i>';
+  lucide.createIcons();
+}
+
+function setIconUnsynced() {
+  const container = document.getElementById('sync-icon');
+  container.innerHTML = '<i data-lucide="cloud-sync"></i>';
+  lucide.createIcons();
+}
+
+// Save notes to server
+async function saveNotes() {
+  if (saving) return;
+  saving = true;
+  setIconUnsynced();
+
+  try {
+    // Save notes
+    await fetch('/notes_backend', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: textarea.value })
+    });
+
+    // After saving, fetch latest version
+    const res = await fetch('/notes_backend');
+    const data = await res.json();
+    lastServerVersion = data.last_modified;
+
+    setIconSynced();
+
+  } catch (e) {
+    setIconUnsynced();
+  }
+
+  saving = false;
+}
+
+// Autosave after 2 seconds of inactivity
+textarea.addEventListener('input', () => {
+  setIconUnsynced();
+  clearTimeout(timeout);
+  timeout = setTimeout(saveNotes, 200);
+});
+
+// Load notes on page load
+fetch('/notes_backend')
+  .then(res => res.json())
+  .then(data => {
+    textarea.value = data.content;
+    lastServerVersion = data.last_modified;
+    setIconSynced();
+  })
+  .catch(() => setIconUnsynced());
+// Poll server every second
+setInterval(async () => {
+  if (isTyping) return; // don't overwrite while typing
+
+  try {
+    const res = await fetch('/notes_backend');
+    const data = await res.json();
+
+    // Only update if server version changed
+    if (data.last_modified > lastServerVersion) {
+      textarea.value = data.content;
+      lastServerVersion = data.last_modified;
+      setIconSynced();
+    }
+
+  } catch (e) {
+    setIconUnsynced();
+  }
+}, 1000);
+
+let lastServerContent = "";
+let isTyping = false;
+let typingTimer;
+
+// Detect typing state
+textarea.addEventListener('input', () => {
+  isTyping = true;
+  setIconUnsynced();
+  clearTimeout(timeout);
+  clearTimeout(typingTimer);
+
+  timeout = setTimeout(saveNotes, 200);
+
+  // User considered "not typing" after 1 second idle
+  typingTimer = setTimeout(() => {
+    isTyping = false;
+  }, 1000);
+});
+</script>
+{% endblock %}
+
+{% set scriptsource = "notes" %}

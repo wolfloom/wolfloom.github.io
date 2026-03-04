@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Debugging{% endblock %}
+{% set csspage = "debug" %}
+
+{% block body_class %}debug-page{% endblock %}
+
+{% block content %}
+<h2>Performance</h2>
+
+<canvas id="usageChart" style="width: 95%; height: 90%;"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('usageChart').getContext('2d');
+
+const data = {
+    labels: [],
+    datasets: [
+        { label: 'CPU %', data: [], borderColor: 'red', fill: false },
+        { label: 'RAM %', data: [], borderColor: 'blue', fill: false },
+        { label: 'Swap %', data: [], borderColor: 'orange', fill: false },
+        { label: 'Disk %', data: [], borderColor: 'green', fill: false },
+    ]
+};
+
+const usageChart = new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: {
+        animation: false,
+        responsive: true,
+		maintainAspectRatio: false,
+        scales: { y: { min: 0, max: 100 } },
+    plugins: {
+		tooltip: {
+			enabled: true,
+			mode: 'nearest',
+			intersect: false,
+			backgroundColor: '#222',
+			titleColor: '#fff',
+			bodyColor: '#fff'
+		}
+	},
+    }
+});
+
+function updateStats(){
+    fetch('/debug/stats').then(res => res.json()).then(stats => {
+        const now = new Date().toLocaleTimeString();
+
+        // add new labels
+        data.labels.push(now);
+        if(data.labels.length > 30) data.labels.shift();
+
+        // Values for the four lines
+        const values = [stats.cpu_percent, stats.memory_percent, stats.swap_percent, stats.disk_percent];
+
+        data.datasets.forEach((ds,i)=>{
+            ds.data.push(values[i]);
+            if(ds.data.length > 30) ds.data.shift();
+        });
+
+        usageChart.update();
+    });
+}
+// initial + every 2s
+updateStats();
+setInterval(updateStats, 1000);
+</script>
+{% endblock %}
+{% set scriptsource = "debug" %}

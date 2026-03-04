@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Files{% endblock %}
+{% set csspage = "files" %}
+
+{% block body_class %}files-page{% endblock %}
+
+{% block content %}
+<main class="main-content">
+    <h1 class="greeting">Files</h1>
+
+    <!-- Search + Upload -->
+    <div class="search-container">
+        <input type="text" id="search" class="search-bar" placeholder="Search files...">
+
+        <form id="uploadForm" action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" id="fileInput" style="display:none">
+            <button type="button" class="upload-btn" title="Upload" onclick="document.getElementById('fileInput').click()">
+                <i data-lucide="upload"></i>
+            </button>
+        </form>
+    </div>
+
+<div class="file-table-wrapper">
+    <table id="fileTable" class="file-table">
+        <thead>
+            <tr>
+                <th data-col="name">Name</th>
+                <th data-col="size">Size</th>
+                <th data-col="date">Date</th>
+                <th data-col="actions"> </th>
+            </tr>
+        </thead>
+        <tbody id="fileList">
+            {% for file in files %}
+<tr class="file-item" data-filename="{{ file }}">
+    <td class="file-name">{{ file }}</td>
+    <td>{{ file_sizes[file] }}</td>
+    <td>{{ file_dates[file] }}</td>
+    <td class="file-actions">
+        <div class="file-menu-container">
+            <button class="ellipsis-btn" onclick="toggleDropdown(this)">
+                <i data-lucide="more-vertical"></i>
+            </button>
+            <div class="file-dropdown">
+                <button class="file-btn" onclick="downloadFile('{{ file }}')">
+                    <i data-lucide="download"></i> Download
+                </button>
+                <button class="file-btn" onclick="deleteFile('{{ file }}')">
+                    <i data-lucide="trash-2"></i> Delete
+                </button>
+            </div>
+        </div>
+    </td>
+</tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</main>
+
+<script>
+function toggleFileMenu(button) {
+    const dropdown = button.nextElementSibling;
+
+    // Close any other open dropdowns
+    document.querySelectorAll('.file-dropdown.show').forEach(menu => {
+        if(menu !== dropdown) menu.classList.remove('show');
+    });
+
+    // Toggle current
+    dropdown.classList.toggle('show');
+
+    // Make sure it sits above everything
+    if(dropdown.classList.contains('show')) {
+        dropdown.style.zIndex = 9999;
+    } else {
+        dropdown.style.zIndex = '';
+    }
+}
+
+// Close menus when clicking outside
+document.addEventListener('click', function(e) {
+    if(!e.target.closest('.file-menu-container')) {
+        document.querySelectorAll('.file-dropdown.show').forEach(menu => {
+            menu.classList.remove('show');
+            menu.style.zIndex = '';
+        });
+    }
+});
+</script>
+
+{% endblock %}
+
+{% set scriptsource = "files" %}

@@ -1,0 +1,177 @@
+body.home-page .main-content {
+    height: calc(100vh - 120px); /* full screen minus bottom nav */
+    justify-content: center;      /* vertical centre */
+}
+
+.greeting {
+    font-size: 3.5rem;
+    margin: 0 0 40px 0;
+    font-weight: 700;
+    letter-spacing: -1px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    background: var(--panel-color);
+    border-radius: 40px;
+    padding: 10px 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    width: 90%;
+    max-width: 500px;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 25px;
+}
+
+.search-bar {
+    flex: 1;
+    border: none !important;
+    background: none !important;
+    background-color: transparent !important;
+    padding: 15px 5px;
+    font-size: 1.1rem;
+    outline: none !important;
+    color: var(--text-color) !important;
+    box-shadow: none !important;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.search-bar::placeholder {
+    color: var(--text-color);
+    opacity: 0.5;
+}
+
+.search-bar {
+    flex: 1 1 auto;   /* Shrinks and grows */
+    min-width: 120px; /* Won't collapse too much */
+}
+
+@media (max-width: 600px) {
+    .search-bar {
+        width: 75%; /* Take full width if needed */
+    }
+}
+
+.engine-selector { position: relative; margin-right: 10px; }
+.current-engine { cursor: pointer; padding: 10px; display: flex; align-items: center; color: var(--text-color); }
+
+.engine-dropdown {
+    display: none;
+    position: absolute;
+    top: 125%;
+    left: -10px;
+    background: var(--panel-color);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    padding: 8px;
+    z-index: 20;
+    min-width: 160px;
+    backdrop-filter: blur(20px);
+}
+
+.engine-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    cursor: pointer;
+    border-radius: 12px;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.engine-option:hover { background: rgba(128,128,128,0.15); }
+
+.shortcut-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.shortcut {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    text-align: center;
+    color: var(--text-color);
+    background: var(--panel-color);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: transform 0.15s;
+    width: 60px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.shortcut img {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.25rem;
+    border-radius: 6px;
+}
+
+.shortcut:hover {
+    transform: scale(1.1);
+}
+
+.add-shortcut {
+    cursor: pointer;
+    border: 2px dashed var(--text-color);
+    justify-content: center;
+}
+
+#shortcutContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 10px 0;
+}
+
+/* Each shortcut box */
+
+.shortcut-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 4px;
+}
+
+/* Plus button at the end */
+.shortcut-add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background-color: var(--panel-color);
+    border-radius: 8px;
+    cursor: pointer;
+}
+.shortcut-add i {
+    stroke-width: 2.5px;
+}
+
+.shortcut, .shortcut-add {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 60px;
+    cursor: pointer;
+}
+
+.shortcut-icon, .shortcut-add i {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 4px;
+}
