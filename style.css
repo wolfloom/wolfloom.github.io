@@ -6,7 +6,7 @@ body {
     background: #1e1e1e;
     color: #eee;
     line-height: 1.6;
-    cursor: url('cursor.png') 150 150;
+    cursor: url('cursor.png') 150 150, pointer;
 }
 
 /* Entire scrollbar */
