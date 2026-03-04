@@ -104,4 +104,15 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
+// Wait until the DOM is fully rendered and layout is stable
+window.addEventListener('load', () => {
+    const defaultTab = document.querySelector('.tab-btn.active');
+    document.getElementById(defaultTab.dataset.tab).classList.add('active');
+
+    // Use RAF to ensure layout calculations are accurate
+    requestAnimationFrame(() => {
+        moveUnderline(defaultTab);
+    });
+});
+
 animate();
