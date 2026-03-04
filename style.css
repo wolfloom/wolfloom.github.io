@@ -327,3 +327,61 @@ footer a:hover {
         justify-content: center;
     }
 }
+
+.download-container {
+    display: flex;
+    gap: 0.5rem;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 9999;
+}
+
+.download-btn {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: #4fc3f7;
+    color: #1e1e1e;
+    border-radius: 6px;
+    padding: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5); /* stronger shadow for better pop */
+    cursor: pointer;
+    height: 2rem;
+    width: 2rem; /* icon-only width initially */
+    transition: width 0.5s ease, box-shadow 0.3s ease;
+}
+
+.download-btn:hover {
+    width: 8rem; /* expand to show text */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6); /* deeper shadow on hover */
+}
+
+.icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2rem;
+}
+
+.download-icon {
+    width: 1.5em;
+    height: auto;
+}
+
+.download-text {
+    display: inline-block;
+    margin-left: 0.5rem;
+    transform: translateX(20px);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    white-space: nowrap;
+}
+
+.download-btn:hover .download-text {
+    transform: translateX(0);
+    opacity: 1;
+}
