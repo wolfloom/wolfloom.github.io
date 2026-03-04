@@ -4,7 +4,9 @@ name: Build WolfLoom Binaries
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:
+    paths:
+      - 'server/**'    # trigger only if anything inside /server changes
+  workflow_dispatch:   # still allows manual trigger
 
 # Needed so release step can create releases
 permissions:
